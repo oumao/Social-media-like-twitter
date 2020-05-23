@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    {% if title %}
+        <title>Twitter Application-{{ title }}</title>
+    {% else %}     
+        <title>Twitter Tpplication</title>
+    {% endif %}     
 </head>
 <body>
        <h1>About page</h1>
