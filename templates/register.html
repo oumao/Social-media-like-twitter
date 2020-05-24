@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+       <div class="content-section">
+           <form action="" method="POST">
+               {{ form.hidden_tag() }} <!-- just like csrf token-->
+               <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Join Today</legend>
+                    <div class="form-control">
+                        {{ form.username.label(class="form-control-label") }}
+                        {{ form.username(class="form-control form-control-lg") }}
+                    </div>
+                    <div class="form-control">
+                        {{ form.email.label(class="form-control-label") }}
+                        {{ form.email(class="form-control form-control-lg") }}
+                    </div>
+                    <div class="form-control">
+                        {{ form.password.label(class="form-control-label") }}
+                        {{ form.password(class="form-control form-control-lg") }}
+                    </div>
+                    <div class="form-control">
+                        {{ form.confirm_password.label(class="form-control-label") }}
+                        {{ form.confirm_password(class="form-control form-control-lg") }}
+                    </div>
+               </fieldset>
+               <div class="form-control">
+                {{ form.submit(class="btn btn-outline-info") }}
+                
+              </div>
+           </form>
+           <div class="border-top pt-3">
+               <small class="text-muted">
+                   Already Have An Account? <a class="ml-2 btn btn-outline-danger" href="{{url_for('login')}}">Login</a> <!--here url go to the login function directly .not the route-->
+               </small>
+           </div>
+       </div>
+
+{% endblock content %}
+       
+    

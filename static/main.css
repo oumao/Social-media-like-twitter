@@ -23,7 +23,13 @@ body {
   .site-header .navbar-nav .nav-link.active {
     font-weight: 500;
   }
-  
+  .form-control{
+    border:none
+  }
+  .form-control input{
+    border:1px solid #ced4da;
+    border-radius: .25rem;
+  }
   .content-section {
     background: #fff;
     padding: 10px 20px;
