@@ -41,6 +41,6 @@ def login():
             flash(f"You have been logged in!!",'success')
             return redirect(url_for('home'))
         else:
-            flash(f"Unsuccessfull log in!!",'success')
+            flash(f"Unsuccessfull log in!! Please check username or password",'danger')
     return render_template('login.html',title='Login', form=form)    
 app.run(debug=True)
