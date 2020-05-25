@@ -33,8 +33,14 @@ def register():
     
         return redirect(url_for('home'))
     return render_template('register.html',title='Register', form=form)
-@app.route('/login')
+@app.route('/login',methods=['GET','POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():#form submit or validate ki na? eita ei function check kore true hole kaj kore
+        if form.email.data=='admin@gmail.com' and form.password.data=='12345':
+            flash(f"You have been logged in!!",'success')
+            return redirect(url_for('home'))
+        else:
+            flash(f"Unsuccessfull log in!!",'success')
     return render_template('login.html',title='Login', form=form)    
 app.run(debug=True)
