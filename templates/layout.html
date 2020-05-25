@@ -38,6 +38,15 @@
     <main role="main" class="container">
     <div class="row">
     <div class="col-md-8">
+      {% with message=get_flashed_messages(with_categories=true) %} <!--get_flashded_message ei function flash ar message dhore -->
+      {% if message %}
+        {% for category,message in message %} <!--eikhane category te asbe bootstrap class ar nam ar message a asbe message-->
+          <div class="alert alert-{{ category }}">
+              {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
       {% block content %}{% endblock %}
     </div>
     <div class="col-md-4">
