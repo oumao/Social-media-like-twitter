@@ -1,8 +1,26 @@
 from flask import Flask,render_template,url_for,flash,redirect
 from form import RegistrationForm,LoginForm
+from flask_sqlalchemy import SQLAlchemy
+import pymysql
+from datetime import datetime
+pymysql.install_as_MySQLdb()
 app = Flask(__name__)
 app.config['SECRET_KEY']='c32bb949a4350a4f3ab9b179fc44f79d'
-posts=[
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/twitter'
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80),unique=True)
+    email = db.Column(db.String(120), unique=True,nullable=False)
+    password = db.Column(db.String(120),nullable=False)
+    image = db.Column(db.String(80),nullable=False,default='default.jpg')
+    posts=db.relationship('Post',backref='author',lazy=True)
+
+    def __repr__(self):
+        return f"User('{self.username},{self.email},{self.image}')"
+    
+post_demo=[
       {
           'title':'blog',
           'author':'Milton',
@@ -19,7 +37,7 @@ posts=[
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html',posts=posts)
+    return render_template('home.html',posts=post_demo)
 
 @app.route('/about')
 def about():
