@@ -1,37 +1,7 @@
-from flask import Flask,render_template,url_for,flash,redirect
-from form import RegistrationForm,LoginForm
-from flask_sqlalchemy import SQLAlchemy
-import pymysql
-from datetime import datetime
-pymysql.install_as_MySQLdb()
-app = Flask(__name__)
-app.config['SECRET_KEY']='c32bb949a4350a4f3ab9b179fc44f79d'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/twitter'
-db = SQLAlchemy(app)
-
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80),unique=True)
-    email = db.Column(db.String(120), unique=True,nullable=False)
-    password = db.Column(db.String(120),nullable=False)
-    image = db.Column(db.String(80),nullable=False,default='default.jpg')
-    posts=db.relationship('Post',backref='author',lazy=True)
-
-    def __repr__(self):
-        return f"User('{self.username},{self.email},{self.image}')"
-
-
-class Post(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        return f"Post('{self.title}', '{self.date_posted}')"
-
-
+from flask import render_template,url_for,flash,redirect
+from twitterblog import app
+from twitterblog.form import RegistrationForm,LoginForm
+from twitterblog.models import User,Post
 
 post_demo=[
       {
@@ -74,4 +44,4 @@ def login():
         else:
             flash(f"Unsuccessfull log in!! Please check username or password",'danger')
     return render_template('login.html',title='Login', form=form)    
-app.run(debug=True)
+
