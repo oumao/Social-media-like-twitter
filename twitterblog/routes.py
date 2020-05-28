@@ -1,5 +1,6 @@
 from flask import render_template,url_for,flash,redirect
-from twitterblog import app,db,bcrypt
+from werkzeug.security import generate_password_hash, check_password_hash
+from twitterblog import app,db
 from twitterblog.form import RegistrationForm,LoginForm
 from twitterblog.models import User,Post
 from flask_login import login_user
@@ -33,8 +34,8 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        
-        user = User(username=form.username.data, email=form.email.data, password=form.password.data)
+        hash_pass = generate_password_hash(form.password.data)
+        user = User(username=form.username.data, email=form.email.data, password=hash_pass)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
@@ -47,11 +48,11 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         
-        print(user.password)
-        print(form.password.data)
-        if user and user.password== form.password.data:
+        # print(user.password)
+        # print(form.password.data)
+        if user and check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
-        
+            flash("login Successfull", 'success')
             return redirect(url_for('home'))
         else:
             flash("Unsuccessfull log in!! Please check username or password",'danger')
